@@ -1,0 +1,98 @@
+/* universal style */
+* {
+    box-sizing: border-box;
+}
+
+main {
+    height: 100vh;
+}
+
+.main-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* layout page */
+body {
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    display: flex;
+    gap: 100px;
+    align-items: center;
+
+    height: 100px;
+    position: sticky;
+    top: 0;
+
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    z-index: 1;
+}
+
+header>nav {
+    margin: 0 auto;
+    /* background-color: aqua; */
+}
+
+header>nav>a  {
+    margin: 30px;
+    text-decoration: none;
+    font-size: 22px;
+    color: white;
+}
+/* 
+.active-link {
+    margin: 30px;
+    text-decoration: none;
+    font-size: 25px;
+    color: red;
+} */
+
+/* order status page */
+main h2 {
+    text-align: center;
+}
+
+.update-status-form {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: fit-content;
+    margin: 30px auto;
+    padding: 30px;
+
+    border: 1px solid #cccccc;
+    
+}
+
+.update-status-form label {
+    font-weight: bold;
+}
+.order-date-and-btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-date {
+    font-size: 15px;
+    color: #696969;
+}
+
+.btn-change-status {
+    background-color: dodgerblue;
+    color: white;
+    border: 1px solid dodgerblue;
+    border-radius: 8px;
+    padding: 10px 30px;
+    font-weight: bold;
+}
+
+.btn-change-status:hover {
+    cursor: pointer;
+}

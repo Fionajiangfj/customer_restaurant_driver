@@ -1,0 +1,11 @@
+<main class="main-center">
+    <form action="/order_status" method="post" id="form-order-status">
+        <h1 id="h1-order-status">Track an Order</h1>
+        {{#if id}}
+            <input name="OCN" type="text" value="{{id}}" placeholder="Order Confirmation Number">
+        {{else}}
+            <input name="OCN" type="text" placeholder="Order Confirmation Number">
+        {{/if}}
+        <button id="btn-order-status" type="submit">Check</button>
+    </form>
+</main>

@@ -1,0 +1,41 @@
+<main>
+    {{! <h1 id="h1-place-order">Place an Order</h1> }}
+    <form action="/place_order" method="post" id="form-place-order">
+
+        {{! left column }}
+        <div id="place-order-left-col">
+            <p id="menu-title-place-order">Menu</p>
+            <div class="menu-item-place-order">
+                {{#each menu}}
+                <div>
+                    <input type="checkbox" name="orderItem" id="{{this._id}}" value="{{this._id}}" />
+                    <label for="{{this._id}}">
+                        {{this.name}}
+                        ------ 
+                        <span class="menu-price-place-order">
+                            $
+                            <span id="span-price-{{this._id}}" class="item-price-place-order">
+                                {{this.price}}
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        {{! right column }}
+        <div id="place-order-right-col">
+            <p id="contect-title-place-order">Contact Info</p>
+            <input type="text" id="username" name="username" placeholder="Username" />
+            <input type="text" id="address" name="address" placeholder="Address" />
+            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="123-456-7890" />
+            <p id="total-place-order">Total: $
+                <span id="span-total-price-place-order">0.00</span>
+            </p>
+            <button id="btn-place-order" type="submit">Place Order</button>
+            <p id="error-msg-place-order"></p>
+        </div>
+
+    </form>
+</main>

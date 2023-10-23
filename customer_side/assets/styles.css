@@ -1,0 +1,387 @@
+/* universal style */
+* {
+    box-sizing: border-box;
+}
+
+main {
+    margin-top: -100px;
+    height: 100vh;
+}
+
+.main-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* layout page */
+body {
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    display: flex;
+    gap: 100px;
+    align-items: center;
+
+    height: 100px;
+    position: sticky;
+    top: 0;
+
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    z-index: 1;
+}
+
+header>nav {
+    margin-left: 20px;
+}
+
+header>nav>a {
+    margin: 20px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+}
+
+/* Footer */
+footer {
+    background-color: black;
+    color: white;
+
+    padding: 20px;
+
+    text-align: center;
+}
+
+.footer-section {
+    margin: 10px;
+    padding: 10px;
+}
+
+.social-icons {
+    font-size: 24px;
+}
+
+.social-icons a {
+    margin: 0 15px;
+    color: white;
+}
+
+/* index page */
+#background-image {
+    background-image:
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+        url('background-image.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+#content-ontop-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+#h2-feature {
+    margin-top: 100px;
+    text-align: center;
+}
+
+#feature-row {
+    display: flex;
+    gap: 30px;
+    width: 80%;
+    margin-top: auto;
+    margin-bottom: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid black;
+    background-color: white;
+}
+
+#details-feature {
+    display: flex;
+    flex-direction: column;
+}
+
+.feature-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #dc9f39;
+    /* background-color: aqua; */
+
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 35px;
+
+    height: 100px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.feature-description {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 30px;
+    padding-right: 60px;
+    height: 100px;
+
+    color: #454545;
+
+    text-align: justify;
+    /* background-color: #dc9f39; */
+}
+
+.feature-price {
+    font-size: 26px;
+    font-weight: bold;
+    text-align: end;
+    color: brown;
+
+    /* background-color: brown; */
+    height: 40px;
+    padding-right: 70px;
+    margin-top: 10px;
+}
+
+#h2-menu {
+    text-align: center;
+    /* background-color: aqua; */
+}
+
+#menu-row {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 100px;
+}
+
+#menu-row>.menu-item {
+    display: flex;
+    flex-direction: column;
+
+    width: 330px;
+    border: 1px solid black;
+}
+
+.menu-item>.menu-item-image {
+    width: 330px;
+    /* margin-bottom: 20px; */
+}
+
+.menu-item>.menu-item-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #dc9f39;
+    /* background-color: aqua; */
+
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 30px;
+
+    height: 100px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.menu-item>.menu-item-description {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 110px;
+
+    color: #454545;
+
+    font-size: 15px;
+    text-align: justify;
+    /* background-color: #dc9f39; */
+}
+
+.menu-item>.menu-item-price {
+    font-size: 23px;
+    font-weight: bold;
+    text-align: end;
+    color: brown;
+
+    /* background-color: brown; */
+    height: 30px;
+    padding-right: 20px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+
+/* place order page */
+#h1-place-order {
+    text-align: center;
+    border-bottom: 1px solid #cccccc;
+    padding: 15px;
+    margin-bottom: 70px;
+}
+
+#form-place-order {
+    display: flex;
+    gap: 100px;
+    justify-content: end;
+    align-items: center;
+
+    height: 100vh;
+}
+
+/* left column */
+#menu-title-place-order {
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    /* background-color: aqua; */
+
+    /* margin-top: 20px; */
+    margin-bottom: 10px;
+}
+
+#place-order-left-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+
+    border: 4px dashed pink;
+    border-radius: 8px;
+
+    width: 50%;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    padding-top: 40px;
+    padding-bottom: 100px;
+}
+
+.menu-item-place-order {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.menu-price-place-order {
+    color: brown;
+}
+
+
+/* right column */
+#place-order-right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+
+    border-left: 2px dashed #cccccc;
+
+    width: 30%;
+    height: 100%;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+#contect-title-place-order {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#place-order-right-col>input {
+    padding: 15px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+}
+
+#total-place-order {
+    text-align: end;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 0px;
+    color: brown;
+}
+
+#btn-place-order {
+    border: 1px solid pink;
+    border-radius: 8px;
+
+
+    padding: 15px;
+    background-color: pink;
+}
+
+#btn-place-order:hover {
+    background-color: rgb(223, 83, 83);
+    color: white;
+    cursor: pointer;
+}
+
+
+/* order status page */
+#form-order-status {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    justify-content: center;
+
+    /* margin: 100px auto; */
+    /* margin-left: auto;
+    margin-right: auto; */
+    padding: 50px 30px;
+    width: 40%;
+    height: 50%;
+    /* height: 100vh; */
+
+    border: 4px dashed pink;
+    border-radius: 8px;
+}
+
+#h1-order-status {
+    text-align: center;
+}
+
+#form-order-status>input {
+    padding: 15px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+}
+
+#form-order-status>#btn-order-status {
+    border: 1px solid pink;
+    border-radius: 8px;
+
+    padding: 15px;
+    background-color: pink;
+}
+
+#form-order-status>#btn-order-status:hover {
+    background-color: rgb(223, 83, 83);
+    color: white;
+    cursor: pointer;
+}
+
+
+/* successful page */
+#recipe {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 70%;
+    margin: 20px auto;
+}

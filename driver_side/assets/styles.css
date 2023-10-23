@@ -1,0 +1,86 @@
+/* universal style */
+* {
+    box-sizing: border-box;
+}
+
+main {
+    height: 100vh;
+}
+
+.main-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* layout page */
+body {
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    display: flex;
+    gap: 100px;
+    align-items: center;
+
+    height: 100px;
+    position: sticky;
+    top: 0;
+
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    z-index: 1;
+}
+
+header>nav {
+    margin: 0 auto;
+    /* background-color: aqua; */
+}
+
+header>nav>a  {
+    margin: 30px;
+    text-decoration: none;
+    font-size: 22px;
+    color: white;
+}
+
+/* index page */
+.login-div {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: 40px auto;
+    gap: 30px;
+
+    text-align: center;
+    align-items: center;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.login-div > input {
+    height: 50px;
+    width: 70%;
+    padding: 20px;
+
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+}
+
+.login-div > button {
+    height: 50px;
+    width: 70%;
+    
+    background-color: dodgerblue;
+    color: white;
+    border: 1px solid dodgerblue;
+    border-radius: 8px;
+
+    font-weight: bold;
+}

@@ -1,0 +1,44 @@
+{{! background image }}
+<main>
+    <div id="background-image">
+        <div id="content-ontop-background">
+            <h1>A MICHELIN GUIDE RESTAURANT</h1>
+        </div>
+    </div>
+</main>
+
+{{! featured menu }}
+<section>
+    <h2 id="h2-feature">Featured</h2>
+    <div id="feature-row">
+        <img
+            class="feature-image"
+            src="{{feature.image}}"
+            alt="{{feature.name}}"
+        />
+        <div id="details-feature">
+            <p class="feature-name">{{feature.name}}</p>
+            <p class="feature-description">{{feature.description}}</p>
+            <p class="feature-price">${{feature.price}}</p>
+        </div>
+    </div>
+</section>
+
+{{! full menu }}
+<section>
+    <h2 id="h2-menu">Menu</h2>
+    <div id="menu-row">
+        {{#each menu}}
+            <div class="menu-item">
+                <img
+                    class="menu-item-image"
+                    src="{{this.image}}"
+                    alt="{{this.name}}"
+                />
+                <p class="menu-item-name">{{this.name}}</p>
+                <p class="menu-item-description">{{this.description}}</p>
+                <p class="menu-item-price">${{this.price}}</p>
+            </div>
+        {{/each}}
+    </div>
+</section>

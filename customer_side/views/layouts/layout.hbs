@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sawadee</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="https://kit.fontawesome.com/b17ed72472.js" crossorigin="anonymous"></script>
+    {{#if isPlaceOrderPage}}
+        <script src="/place_order.js" defer></script>
+    {{/if}}
+    {{#if isOrderStatusPage}}
+        <script src="/order_status.js" defer></script>
+    {{/if}}
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/place_order">Place an Order</a>
+            <a href="/order_status">Order Status</a>
+        </nav>
+        <h1>Welcome to Sawadee!</h1>
+    </header>
+
+    {{{body}}}
+
+    {{! location and hour }}
+    <footer>
+        <div class="footer-section">
+            <h4>Location</h4>
+            <p>123 Thai St., Foodville, Yummyland</p>
+        </div>
+        <div class="footer-section">
+            <h4>Hours of Operation</h4>
+            <p>Mon-Fri: 11:00 AM - 10:00 PM</p>
+            <p>Sat-Sun: 12:00 PM - 11:00 PM</p>
+        </div>
+        <div class="footer-section">
+            <h4>Contact Us</h4>
+            <p>Email: Sawadee@thairestaurant.com</p>
+            <p>Phone: +1 234 567 8900</p>
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+    </footer>
+</body>
+
+</html>

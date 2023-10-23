@@ -1,0 +1,15 @@
+<main>
+    {{#each orderList}}
+    <form action="/update_status/{{this._id}}" class="update-status-form" method="post">
+        <p>Customer Name: {{this.customerName}}</p>
+        <p>Address: {{this.deliveryAddress}}</p>
+        <p>Phone Number: {{this.phoneNumber}}</p>
+        <p>Order Items:
+            {{#each this.itemsOrdered}}
+        <p>{{this.name}}</p>
+        {{/each}}
+        </p>
+        <p>Order placed at: {{this.createdAt}}</p>
+    </form>
+    {{/each}}
+</main>
