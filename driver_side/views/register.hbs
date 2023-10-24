@@ -1,0 +1,33 @@
+<main>
+    <form action="/register" method="post">
+    <div class="login-div">
+        <h2>Register for a Driver Account</h2>
+        <input name="fullName" type="text" placeholder="Full Name">
+        <input name="vehicleModel" type="text" placeholder="Vehicle Model">
+        <select name="vehicleColor" id="">
+            <option class="disabled-option" disabled selected>Please select your vehicle color</option>
+            <option value="black">Black</option>
+            <option value="silver">Silver</option>
+            <option value="gray">Gray</option>
+            <option value="white">White</option>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="orange">Orange</option>
+            <option value="beige">Beige</option>
+            <option value="yellow">Yellow</option>
+            <option value="purple">Purple</option>
+        </select>
+        <input name="licensePlate" type="text" placeholder="License Plate">
+
+        <input name="username" type="text" placeholder="Username">
+        <input name="password" type="password" placeholder="Password">
+        <input name="confirmation" type="password" placeholder="Please confirm the password">
+        
+        <button type="submit">Register</button>
+        {{#if msg}}
+            <p>{{msg}}</p>
+        {{/if}}
+    </div>
+    </form>
+</main>

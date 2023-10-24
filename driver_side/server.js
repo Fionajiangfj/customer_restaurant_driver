@@ -21,13 +21,17 @@ app.use(
         secret: "terrace cat",
         resave: false,
         saveUninitialized: true,
-        // cookie: { secure: true },
     })
 );
+
+//flash
+const flash = require("connect-flash");
+app.use(flash());
 
 // connect to database
 const mongoose = require("mongoose");
 const { timeStamp, time, log } = require("console");
+const { match } = require("assert");
 const CONNECTION_STRING =
     "mongodb+srv://jiang6073:TOvVYW5VBogiV1PL@cluster0.ctn43sl.mongodb.net/restaurant?retryWrites=true&w=majority";
 mongoose.connect(CONNECTION_STRING);
@@ -59,7 +63,13 @@ const orderSchema = new Schema(
         },
         status: {
             type: String,
-            enum: ['PLACED', 'RECEIVED', 'READY FOR DELIVERY', 'IN TRANSIT', 'DELIVERED'],
+            enum: [
+                "PLACED",
+                "RECEIVED",
+                "READY FOR DELIVERY",
+                "IN TRANSIT",
+                "DELIVERED",
+            ],
             required: true,
         },
         driver: {
@@ -77,84 +87,147 @@ const driverSchema = new Schema(
         username: {
             type: String,
             required: true,
-        }
+            unique: true,
+        },
     },
     {
         password: {
             type: String,
             required: true,
-        }
+        },
     },
     {
         fullName: {
             type: String,
             required: true,
-        }
+        },
     },
     {
         vehicleModel: {
             type: String,
             required: true,
-        }
+        },
     },
     {
-        color: {
+        vehicleColor: {
             type: String,
             required: true,
-        }
+        },
     },
     {
         licensePlate: {
             type: String,
             required: true,
-        }
-    }
-)
+        },
+    },
+    {timestamps: true}
+);
 // model
 const Order = mongoose.model("orders_collection", orderSchema);
-const Driver = mongoose.model("driver_collection", driverSchema)
+const Driver = mongoose.model("driver_collection", driverSchema);
 // -----------------------------------------
 app.get("/", (req, res) => {
     return res.render("index", {
         layout: "layout.hbs",
-    })
-})
+    });
+});
 
+// login and register
 app.get("/login", (req, res) => {
+    const msg = req.flash('info')
     return res.render("login", {
         layout: "layout.hbs",
-    })
-})
+        msg: msg
+    });
+});
 
-app.post("/login", (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
+app.post("/login", async (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
 
     if (!username || !password) {
-        return res.render("login", {
-            layout: "layout.hbs",
-            msg: "Both username and passoword have to be provide."
-        })
+        req.flash('info', "Both username and passoword have to be provide.")
+        return res.redirect("/login");
     }
 
     try {
-        const userFromDB = Driver.findOne({username: username, password: password}).lean()
-    } catch(error) {
-        return res.render("error", {
-            layout:"layout.hbs",
-            msg: "Can not find the user."
-        })
+        const userFromDB = await Driver.findOne({
+            username: username,
+            password: password,
+        }).lean();
+    } catch (error) {
+        return res.render("login", {
+            layout: "layout.hbs",
+            msg: "Can not find the user.",
+        });
     }
 
-    session.user = {
+    req.session.user = {
         username: username,
         password: password,
-        
+        isLoggedIn: true,
+    };
+
+    return res.redirect("/");
+});
+
+app.get("/register", (req, res) => {
+    const msg = req.flash('info')
+    return res.render("register", {
+        layout: "layout.hbs",
+        msg: msg,
+    });
+});
+
+app.post("/register", async (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    const confirmation = req.body.confirmation;
+    const fullName = req.body.fullName
+    const vehicleModel = req.body.vehicleModel
+    const vehicleColor = req.body.vehicleColor
+    const licensePlate = req.body.licensePlate
+
+    if (!username || !password || !confirmation ||
+        !fullName || !vehicleModel || !vehicleColor || !licensePlate) {
+        req.flash('info', 'Please fill out all the fields.')
+        return res.redirect("/register")
+    }
+
+    if(password !== confirmation){
+        req.flash('info', "Password doesn't match confirmation password, please try again.")
+        return res.redirect("/register")
+    }
+
+    const driverToInsert = new Driver({
+        username: username,
+        password: password,
+        fullName: fullName,
+        vehicleModel: vehicleModel,
+        vehicleColor: vehicleColor,
+        licensePlate: licensePlate,
+    })
+
+    console.log(driverToInsert)
+
+    try {
+        await driverToInsert.save()
+    } catch(err){
+        return res.render('error', {
+            layout: "layout.hbs",
+            msg: "Sorry, there seems to be something wrong..."
+        })
     }
     
-    
+    req.session.user = {
+        username: username,
+        password: password,
+        isLoggedIn: true,
+    }
 
-})
+    return res.redirect('/login')
+});
+
 // -----------------------------------------
 const onHttpStart = () => {
     console.log(`The web server has started at http://localhost:${HTTP_PORT}`);

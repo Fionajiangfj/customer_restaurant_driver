@@ -14,7 +14,6 @@ main {
     align-items: center;
 }
 
-
 /* layout page */
 body {
     margin: 0px;
@@ -64,10 +63,19 @@ header>nav>a  {
     padding-bottom: 40px;
 }
 
-.login-div > input {
+.login-div > input{
     height: 50px;
     width: 70%;
     padding: 20px;
+
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+}
+
+.login-div > select{
+    height: 50px;
+    width: 70%;
+    padding-left: 20px;
 
     border: 1px solid #cccccc;
     border-radius: 8px;
@@ -83,4 +91,8 @@ header>nav>a  {
     border-radius: 8px;
 
     font-weight: bold;
+}
+
+.login-div > button:hover {
+    cursor: pointer;
 }
