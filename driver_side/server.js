@@ -89,38 +89,28 @@ const driverSchema = new Schema(
             required: true,
             unique: true,
         },
-    },
-    {
         password: {
             type: String,
             required: true,
         },
-    },
-    {
         fullName: {
             type: String,
             required: true,
         },
-    },
-    {
         vehicleModel: {
             type: String,
             required: true,
         },
-    },
-    {
         vehicleColor: {
             type: String,
             required: true,
         },
-    },
-    {
         licensePlate: {
             type: String,
             required: true,
         },
     },
-    {timestamps: true}
+    { timestamps: true }
 );
 // model
 const Order = mongoose.model("orders_collection", orderSchema);
@@ -134,10 +124,10 @@ app.get("/", (req, res) => {
 
 // login and register
 app.get("/login", (req, res) => {
-    const msg = req.flash('info')
+    const msg = req.flash("info");
     return res.render("login", {
         layout: "layout.hbs",
-        msg: msg
+        msg: msg,
     });
 });
 
@@ -146,7 +136,7 @@ app.post("/login", async (req, res) => {
     const password = req.body.password;
 
     if (!username || !password) {
-        req.flash('info', "Both username and passoword have to be provide.")
+        req.flash("info", "Both username and passoword have to be provide.");
         return res.redirect("/login");
     }
 
@@ -155,24 +145,28 @@ app.post("/login", async (req, res) => {
             username: username,
             password: password,
         }).lean();
+
+        if (userFromDB) {
+            req.session.user = {
+                username: username,
+                password: password,
+                isLoggedIn: true,
+            };
+            return res.redirect("/");
+        } else {
+            req.flash("info", "Can not find the user, please try again.");
+            return res.redirect("/login");
+        }
     } catch (error) {
         return res.render("login", {
             layout: "layout.hbs",
             msg: "Can not find the user.",
         });
     }
-
-    req.session.user = {
-        username: username,
-        password: password,
-        isLoggedIn: true,
-    };
-
-    return res.redirect("/");
 });
 
 app.get("/register", (req, res) => {
-    const msg = req.flash('info')
+    const msg = req.flash("info");
     return res.render("register", {
         layout: "layout.hbs",
         msg: msg,
@@ -183,20 +177,30 @@ app.post("/register", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const confirmation = req.body.confirmation;
-    const fullName = req.body.fullName
-    const vehicleModel = req.body.vehicleModel
-    const vehicleColor = req.body.vehicleColor
-    const licensePlate = req.body.licensePlate
+    const fullName = req.body.fullName;
+    const vehicleModel = req.body.vehicleModel;
+    const vehicleColor = req.body.vehicleColor;
+    const licensePlate = req.body.licensePlate;
 
-    if (!username || !password || !confirmation ||
-        !fullName || !vehicleModel || !vehicleColor || !licensePlate) {
-        req.flash('info', 'Please fill out all the fields.')
-        return res.redirect("/register")
+    if (
+        !username ||
+        !password ||
+        !confirmation ||
+        !fullName ||
+        !vehicleModel ||
+        !vehicleColor ||
+        !licensePlate
+    ) {
+        req.flash("info", "Please fill out all the fields.");
+        return res.redirect("/register");
     }
 
-    if(password !== confirmation){
-        req.flash('info', "Password doesn't match confirmation password, please try again.")
-        return res.redirect("/register")
+    if (password !== confirmation) {
+        req.flash(
+            "info",
+            "Password doesn't match confirmation password, please try again."
+        );
+        return res.redirect("/register");
     }
 
     const driverToInsert = new Driver({
@@ -206,26 +210,24 @@ app.post("/register", async (req, res) => {
         vehicleModel: vehicleModel,
         vehicleColor: vehicleColor,
         licensePlate: licensePlate,
-    })
-
-    console.log(driverToInsert)
+    });
 
     try {
-        await driverToInsert.save()
-    } catch(err){
-        return res.render('error', {
+        await driverToInsert.save();
+    } catch (err) {
+        return res.render("error", {
             layout: "layout.hbs",
-            msg: "Sorry, there seems to be something wrong..."
-        })
+            msg: "Sorry, there seems to be something wrong...",
+        });
     }
-    
+
     req.session.user = {
         username: username,
         password: password,
         isLoggedIn: true,
-    }
+    };
 
-    return res.redirect('/login')
+    return res.redirect("/");
 });
 
 // -----------------------------------------
