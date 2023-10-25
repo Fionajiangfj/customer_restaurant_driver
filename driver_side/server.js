@@ -116,13 +116,23 @@ const driverSchema = new Schema(
 const Order = mongoose.model("orders_collection", orderSchema);
 const Driver = mongoose.model("driver_collection", driverSchema);
 // -----------------------------------------
-app.get("/", (req, res) => {
+// middleware
+const ensureLogin = (req, res, next) => {
+    if (req.session.user){
+        next()
+    } else {
+        req.flash("info", "Please login first.")
+        return res.redirect('/login')
+    }
+}
+// -----------------------------------------
+app.get("/", ensureLogin, (req, res) => {
     return res.render("index", {
         layout: "layout.hbs",
     });
 });
 
-// login and register
+// login, register, logout
 app.get("/login", (req, res) => {
     const msg = req.flash("info");
     return res.render("login", {
@@ -229,6 +239,16 @@ app.post("/register", async (req, res) => {
 
     return res.redirect("/");
 });
+
+app.get("/logout", (req, res) => {
+    if (req.session.user){
+        req.session.destroy()
+        return res.redirect("/")
+    } else {
+        req.flash("info", "No user is login in.")
+        return res.redirect("/login")
+    }
+})
 
 // -----------------------------------------
 const onHttpStart = () => {
