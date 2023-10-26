@@ -1,15 +1,24 @@
 <main>
     {{#each orderList}}
     <form action="/update_status/{{this._id}}" class="update-status-form" method="post">
-        <p>Customer Name: {{this.customerName}}</p>
-        <p>Address: {{this.deliveryAddress}}</p>
-        <p>Phone Number: {{this.phoneNumber}}</p>
-        <p>Order Items:
+        <label for="customer-info">Customer Info:</label>
+        <ul name="customer-info">
+            <li>Name: {{this.customerName}}</li>
+            <li>Address: {{this.deliveryAddress}}</li>
+            <li>Phone Number: {{this.phoneNumber}}</li>
+        </ul>
+
+        <label name="order-items">Order Items:</label>
+        <ul name="order-items">
             {{#each this.itemsOrdered}}
-        <p>{{this.name}}</p>
-        {{/each}}
-        </p>
-        <p>Order placed at: {{this.createdAt}}</p>
+            <li>{{this.name}}</li>
+            {{/each}}
+        </ul>
+        <div class="order-date-and-btn">
+                <p class="order-date">Order delivered at: {{this.updatedAt}}</p>
+                <a href="{{this.proofOfDelivery}}">See the proof of delivery</a>
+        </div>
+        
     </form>
     {{/each}}
 </main>
