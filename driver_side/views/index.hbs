@@ -1,8 +1,8 @@
 <main>
     {{#if msg}}
-        <h2></h2>{{msg}}
+        <h2>{{msg}}</h2>
     {{else}}
-        <h2>In transit...</h2>
+        <h2>In Transit</h2>
     {{/if}}
 
     {{#each inTransitList}}
@@ -12,6 +12,7 @@
             method="post"
             enctype="multipart/form-data"
         >
+
             <label for="customer-info">Customer Info:</label>
             <ul name="customer-info">
                 <li>Name: {{this.customerName}}</li>
@@ -30,7 +31,7 @@
                 {{!-- <p class="order-date">Order placed at: {{this.createdAt}}</p> --}}
                 <div>
                     <label for="proof-file-{{this.id}}">Proof of delivery:</label>
-                    <input id="proof-file-{{this.id}}" type="file" />
+                    <input name="photo" id="proof-file-{{this.id}}" type="file" />
                 </div>
                 <button class="btn-change-status" type="submit">Deliver</button>
             </div>

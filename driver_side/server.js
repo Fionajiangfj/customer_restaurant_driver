@@ -28,15 +28,17 @@ app.use(
 const flash = require("connect-flash");
 app.use(flash());
 
-//phote storage
+//photo storage
 const multer = require("multer")
-const myStorge = multer.diskStorage({
-    destination: "./assets/photos/",
+const storage = multer.diskStorage({
+    destination: function (req, file, cb){
+        cb(null, "./assets/photos/")
+    },
     filename: function(req, file, cb){
-        cb(null, `${Date.now()}${path.extname(file.originalname)}`)
+        cb(null, Date.now() + path.extname(file.originalname))
     }
 })
-const upload = multer({storage: myStorge})
+const upload = multer({storage: storage})
 
 // connect to database
 const mongoose = require("mongoose");
@@ -137,12 +139,13 @@ const ensureLogin = (req, res, next) => {
 }
 // -----------------------------------------
 app.get("/", ensureLogin, async (req, res) => {
-    
+    const msg = req.flash("info")
     try {
         const inTransitList = await Order.find({status: "IN TRANSIT"}).lean()
         return res.render("index", {
             layout: "layout.hbs",
-            inTransitList: inTransitList
+            inTransitList: inTransitList,
+            msg: msg
         });
     }catch(err){
         req.flash("info", "There seems to be something wrong, please try again later.")
@@ -165,11 +168,28 @@ app.get("/open_for_delivery", ensureLogin, async (req, res) => {
 });
 
 app.post("/upload_proof/:id", ensureLogin, upload.single("photo"), async (req, res) => {
-    const orderID = req.params.id
-    const order = await Order.findById(orderID)
-    // order.proofOfDelivery = 
-    // try using multer to return the photo to server 
-    // and store the photo url in the database
+    try {
+        const orderID = req.params.id
+        const order = await Order.findById(orderID)
+
+        const file = req.file
+
+        console.log(file);
+        if (!file){
+            req.flash("info", "Please upload a picture before submitting.")
+            return res.redirect('/')
+        }
+        const photoURL = `/photos/${file.filename}`
+        order.proofOfDelivery = photoURL
+        order.status = "DELIVERED"
+
+        await order.save()
+
+        return res.redirect('/history')
+    } catch(err){
+        req.flash("info", "There seems to be something wrong, please try again later.")
+        return res.redirect('/')
+    }
 })
 
 app.get("/history", ensureLogin, async(req, res) => {
