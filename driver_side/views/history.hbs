@@ -1,0 +1,23 @@
+<main>
+    <h2>History Deliveries</h2>
+    {{#each deliveredList}}
+        <label for="customer-info">Customer Info:</label>
+        <ul name="customer-info">
+            <li>Name: {{this.customerName}}</li>
+            <li>Address: {{this.deliveryAddress}}</li>
+            <li>Phone Number: {{this.phoneNumber}}</li>
+        </ul>
+
+        <label name="order-items">Order Items:</label>
+        <ul name="order-items">
+            {{#each this.itemsOrdered}}
+                <li>{{this.name}}</li>
+            {{/each}}
+        </ul>
+        <div class="order-date-and-btn">
+            <p class="order-date">Order placed at: {{this.createdAt}}</p>
+            <button class="btn-change-status" type="submit">Receive</button>
+        </div>
+
+    {{/each}}
+</main>

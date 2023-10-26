@@ -28,6 +28,16 @@ app.use(
 const flash = require("connect-flash");
 app.use(flash());
 
+//phote storage
+const multer = require("multer")
+const myStorge = multer.diskStorage({
+    destination: "./assets/photos/",
+    filename: function(req, file, cb){
+        cb(null, `${Date.now()}${path.extname(file.originalname)}`)
+    }
+})
+const upload = multer({storage: myStorge})
+
 // connect to database
 const mongoose = require("mongoose");
 const { timeStamp, time, log } = require("console");
@@ -126,17 +136,77 @@ const ensureLogin = (req, res, next) => {
     }
 }
 // -----------------------------------------
-app.get("/", ensureLogin, (req, res) => {
-    return res.render("index", {
-        layout: "layout.hbs",
-    });
+app.get("/", ensureLogin, async (req, res) => {
+    
+    try {
+        const inTransitList = await Order.find({status: "IN TRANSIT"}).lean()
+        return res.render("index", {
+            layout: "layout.hbs",
+            inTransitList: inTransitList
+        });
+    }catch(err){
+        req.flash("info", "There seems to be something wrong, please try again later.")
+        return res.redirect('/')
+    }
 });
+
+app.get("/open_for_delivery", ensureLogin, async (req, res) => {
+    
+    try {
+        const openOrderList = await Order.find({status: "READY FOR DELIVERY"}).lean()
+        return res.render("open_for_delivery", {
+            layout: "layout.hbs",
+            openOrderList: openOrderList
+        });
+    }catch(err){
+        req.flash("info", "There seems to be something wrong, please try again later.")
+        return res.redirect('/')
+    }
+});
+
+app.post("/upload_proof/:id", ensureLogin, upload.single("photo"), async (req, res) => {
+    const orderID = req.params.id
+    const order = await Order.findById(orderID)
+    // order.proofOfDelivery = 
+    // try using multer to return the photo to server 
+    // and store the photo url in the database
+})
+
+app.get("/history", ensureLogin, async(req, res) => {
+    try {
+        const deliveredList = await Order.find({status: "DELIVERED"}).lean()
+        return res.render("history", {
+            layout: "layout.hbs",
+            deliveredList: deliveredList
+        });
+    }catch(err){
+        req.flash("info", "There seems to be something wrong, please try again later.")
+        return res.redirect('/')
+    }
+})
+
+app.post("/update_status/:id", ensureLogin, async(req, res) => {
+    const orderID = req.params.id
+    const newStatus = req.body.newStatus
+
+    try {
+        const order = await Order.findById(orderID)
+        order.status = newStatus
+        order.save()
+
+        return res.redirect(`/`)
+    } catch(err){
+        req.flash("info", "There seems to be something wrong, please try again later.")
+        return res.redirect('/')
+    }
+})
+
 
 // login, register, logout
 app.get("/login", (req, res) => {
     const msg = req.flash("info");
     return res.render("login", {
-        layout: "layout.hbs",
+        layout: "layoutLogin.hbs",
         msg: msg,
     });
 });
@@ -167,18 +237,16 @@ app.post("/login", async (req, res) => {
             req.flash("info", "Can not find the user, please try again.");
             return res.redirect("/login");
         }
-    } catch (error) {
-        return res.render("login", {
-            layout: "layout.hbs",
-            msg: "Can not find the user.",
-        });
+    } catch(err){
+        req.flash("info", "There seems to be something wrong, please try again later.")
+        return res.redirect('/')
     }
 });
 
 app.get("/register", (req, res) => {
     const msg = req.flash("info");
     return res.render("register", {
-        layout: "layout.hbs",
+        layout: "layoutLogin.hbs",
         msg: msg,
     });
 });
@@ -224,11 +292,9 @@ app.post("/register", async (req, res) => {
 
     try {
         await driverToInsert.save();
-    } catch (err) {
-        return res.render("error", {
-            layout: "layout.hbs",
-            msg: "Sorry, there seems to be something wrong...",
-        });
+    } catch(err){
+        req.flash("info", "There seems to be something wrong, please try again later.")
+        return res.redirect('/')
     }
 
     req.session.user = {
@@ -243,7 +309,7 @@ app.post("/register", async (req, res) => {
 app.get("/logout", (req, res) => {
     if (req.session.user){
         req.session.destroy()
-        return res.redirect("/")
+        return res.redirect("/login")
     } else {
         req.flash("info", "No user is login in.")
         return res.redirect("/login")
