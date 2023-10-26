@@ -1,0 +1,29 @@
+<main>
+    <h2>Delivery History</h2>
+    {{#each deliveredList}}
+        <form
+            action="/update_status/{{this._id}}"
+            class="update-status-form"
+            method="post"
+        >
+            <label for="customer-info">Customer Info:</label>
+            <ul name="customer-info">
+                <li>Name: {{this.customerName}}</li>
+                <li>Address: {{this.deliveryAddress}}</li>
+                <li>Phone Number: {{this.phoneNumber}}</li>
+            </ul>
+
+            <label name="order-items">Order Items:</label>
+            <ul name="order-items">
+                {{#each this.itemsOrdered}}
+                    <li>{{this.name}}</li>
+                {{/each}}
+            </ul>
+            <div class="order-date-and-btn">
+                <p class="order-date">Order delivered at: {{this.updatedAt}}</p>
+                <a href="{{this.proofOfDelivery}}">See the proof of delivery</a>
+            </div>
+
+        </form>
+    {{/each}}
+</main>

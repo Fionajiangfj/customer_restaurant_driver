@@ -1,3 +1,41 @@
 <main>
-    This is the index page.
+    {{#if msg}}
+        <h2>{{msg}}</h2>
+    {{else}}
+        <h2>In Transit</h2>
+    {{/if}}
+
+    {{#each inTransitList}}
+        <form
+            action="/upload_proof/{{this._id}}"
+            class="update-status-form"
+            method="post"
+            enctype="multipart/form-data"
+        >
+
+            <label for="customer-info">Customer Info:</label>
+            <ul name="customer-info">
+                <li>Name: {{this.customerName}}</li>
+                <li>Address: {{this.deliveryAddress}}</li>
+                <li>Phone Number: {{this.phoneNumber}}</li>
+            </ul>
+
+            <label name="order-items">Order Items:</label>
+            <ul name="order-items">
+                {{#each this.itemsOrdered}}
+                    <li>{{this.name}}</li>
+                {{/each}}
+            </ul>
+            <input type="hidden" name="newStatus" value="DELIVERED" />
+            <div class="order-date-and-btn">
+                {{!-- <p class="order-date">Order placed at: {{this.createdAt}}</p> --}}
+                <div>
+                    <label for="proof-file-{{this.id}}">Proof of delivery:</label>
+                    <input name="photo" id="proof-file-{{this.id}}" type="file" />
+                </div>
+                <button class="btn-change-status" type="submit">Deliver</button>
+            </div>
+
+        </form>
+    {{/each}}
 </main>

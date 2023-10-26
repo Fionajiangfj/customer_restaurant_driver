@@ -3,9 +3,7 @@
     box-sizing: border-box;
 }
 
-main {
-    height: 100vh;
-}
+
 
 .main-center {
     display: flex;
@@ -25,18 +23,17 @@ header {
     gap: 100px;
     align-items: center;
 
-    height: 100px;
-    position: sticky;
-    top: 0;
+    height: 13vh;
 
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: black;
     color: white;
-    z-index: 1;
 }
 
 header>nav {
-    margin: 0 auto;
-    /* background-color: aqua; */
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    padding-right: 60px;
 }
 
 header>nav>a  {
@@ -94,5 +91,48 @@ header>nav>a  {
 }
 
 .login-div > button:hover {
+    cursor: pointer;
+}
+
+/* index page */
+main h2 {
+    text-align: center;
+}
+
+.update-status-form {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: fit-content;
+    margin: 30px auto;
+    padding: 30px;
+
+    border: 1px solid #cccccc;
+    
+}
+
+.update-status-form label {
+    font-weight: bold;
+}
+.order-date-and-btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-date {
+    font-size: 15px;
+    color: #696969;
+}
+
+.btn-change-status {
+    background-color: dodgerblue;
+    color: white;
+    border: 1px solid dodgerblue;
+    border-radius: 8px;
+    padding: 10px 30px;
+    font-weight: bold;
+}
+
+.btn-change-status:hover {
     cursor: pointer;
 }
