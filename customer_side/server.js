@@ -17,8 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 // connect to database
 const mongoose = require("mongoose");
 const { timeStamp, time, log } = require("console");
+const { match } = require("assert");
 const CONNECTION_STRING =
-    "mongodb+srv://dbUser:Rnn2xtWE1iI2F7GO@cluster0.mj9hfv0.mongodb.net/Food_Delivery_Project?retryWrites=true&w=majority";
+    "mongodb+srv://jiang6073:TOvVYW5VBogiV1PL@cluster0.ctn43sl.mongodb.net/restaurant?retryWrites=true&w=majority";
 mongoose.connect(CONNECTION_STRING);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Error connecting to database: "));
@@ -97,13 +98,14 @@ const Order = mongoose.model("orders_collection", orderSchema);
 app.get("/", async (req, res) => {
     try {
         const menu = await Menu.find().lean().exec();
-        const feature = await Menu.findOne({ is_featured: true }).lean();
+        const feature = await Menu.findOne({ isFeatured: true }).lean();
         return res.render("index", {
             layout: "layout.hbs",
             menu: menu,
             feature: feature,
         });
     } catch (err) {
+        console.log(err);
         return res.redirect('/error')
     }
 });
@@ -123,37 +125,25 @@ app.get("/place_order", async (req, res) => {
 
 app.post("/place_order", async (req, res) => {
     const orderItemsIDs = req.body.orderItem;
-    console.log(orderItemsIDs);
     const username = req.body.username;
     const address = req.body.address;
+    const phoneNumber = req.body.phoneNumber
 
     // Validate form data
-    if (!orderItemsIDs || !username || !address) {
+    if (!orderItemsIDs || !username || !address || !phoneNumber) {
         // if invalid
         return res.render("error", {
             layout: "layout.hbs",
             message: "All fields must be filled out.",
         });
     } else {
-
         // if valid
-        // get order items names and total price
         let orderList = [];
-        let orderListName = [];
-        let sum = 0;
         for (itemID of orderItemsIDs ) {
             try {
                 // get item object
                 const item = await Menu.findOne({ _id: itemID }).lean()
                 orderList.push(item)
-
-                // get item name
-                const itemName = item.name
-                orderListName.push(itemName)
-
-                // get item price
-                const itemPrice = parseFloat(item.price)
-                sum += itemPrice
             } catch(err) {
                 return res.redirect('/error')
             }
@@ -162,13 +152,9 @@ app.post("/place_order", async (req, res) => {
         const orderToInsert = new Order({
             customerName: username,
             deliveryAddress: address,
-            itemsOrdered: orderListName,
-            orderTotal: sum,
-            orderDate: new Date(),
-            status: "RECEIVED",
-            driverName: "",
-            licensePlate: "",
-            proofOfDelivery: "",
+            phoneNumber: phoneNumber,
+            itemsOrdered: orderList,
+            status: "PLACED",
         });
 
         try {
@@ -176,7 +162,6 @@ app.post("/place_order", async (req, res) => {
             return res.render("successful", {
                 layout: "layout.hbs",
                 OCN: `${orderToInsert._id}`,
-                orderList: orderList,
             });
         } catch (err) {
             return res.redirect('/error')
