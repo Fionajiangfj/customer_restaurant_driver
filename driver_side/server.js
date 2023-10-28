@@ -144,15 +144,15 @@ app.get("/", ensureLogin, async (req, res) => {
         const driver = await Driver.findOne(req.session.user)
         const inTransitList = await Order.find({driver: driver, status: "IN TRANSIT"}).lean()
         
-        let hasInTransitOrders = false
+        let hasOrders = false
         if (inTransitList.length > 0) {
-            hasInTransitOrders = true
+            hasOrders = true
         }
 
         return res.render("index", {
             layout: "layout.hbs",
             inTransitList: inTransitList,
-            hasInTransitOrders: hasInTransitOrders,
+            hasOrders: hasOrders,
             msg: msg
         });
     }catch(err){
@@ -165,9 +165,16 @@ app.get("/open_for_delivery", ensureLogin, async (req, res) => {
     
     try {
         const openOrderList = await Order.find({status: "READY FOR DELIVERY"}).lean()
+        
+        let hasOrders = false
+        if (openOrderList.length > 0) {
+            hasOrders = true
+        }
+
         return res.render("open_for_delivery", {
             layout: "layout.hbs",
-            openOrderList: openOrderList
+            openOrderList: openOrderList,
+            hasOrders: hasOrders,
         });
     }catch(err){
         req.flash("info", "There seems to be something wrong, please try again later.")
@@ -179,9 +186,16 @@ app.get("/history", ensureLogin, async(req, res) => {
     try {
         const driver = await Driver.findOne(req.session.user)
         const deliveredList = await Order.find({driver: driver, status: "DELIVERED"}).lean()
+        
+        let hasOrders = false
+        if (deliveredList.length > 0) {
+            hasOrders = true
+        }
+
         return res.render("history", {
             layout: "layout.hbs",
-            deliveredList: deliveredList
+            deliveredList: deliveredList,
+            hasOrders: hasOrders,
         });
     }catch(err){
         req.flash("info", "There seems to be something wrong, please try again later.")
@@ -189,7 +203,7 @@ app.get("/history", ensureLogin, async(req, res) => {
     }
 })
 
-app.get("/profile", async (req, res) => {
+app.get("/profile", ensureLogin, async (req, res) => {
     try {
         const driverObjectFromDB = await Driver.findOne(req.session.user).lean()
         return res.render("profile", {

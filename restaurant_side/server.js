@@ -112,43 +112,105 @@ app.get("/", (req, res) => {
 })
 
 app.get("/to_be_received", async (req, res) => {
-    const orderList = await findOrderList("PLACED");
-    return res.render("to_be_received", {
-        layout: "layout.hbs",
-        orderList: orderList,
-    })
+    try {
+        const orderList = await findOrderList("PLACED");
+
+        let hasOrders = false
+        if (orderList.length > 0) {
+            hasOrders = true
+        }
+
+        return res.render("to_be_received", {
+            layout: "layout.hbs",
+            orderList: orderList,
+            hasOrders: hasOrders,
+        })
+    } catch (err) {
+        console.log(err);
+        return res.redirect('/error')
+    }
+    
 })
 
 app.get("/received", async (req, res) => {
-    const orderList = await findOrderList("RECEIVED");
-    return res.render("received", {
-        layout: "layout.hbs",
-        orderList: orderList,
-    })
+    try {
+        const orderList = await findOrderList("RECEIVED");
+
+        let hasOrders = false
+        if (orderList.length > 0) {
+            hasOrders = true
+        }
+
+        return res.render("received", {
+            layout: "layout.hbs",
+            orderList: orderList,
+            hasOrders: hasOrders,
+        })
+    } catch (err) {
+        console.log(err);
+        return res.redirect('/error')
+    }
+
 })
 
 app.get("/ready_for_delivery", async (req, res) => {
-    const orderList = await findOrderList("READY FOR DELIVERY");
-    return res.render("ready_for_delivery", {
-        layout: "layout.hbs",
-        orderList: orderList,
-    })
+    try {
+        const orderList = await findOrderList("READY FOR DELIVERY");
+
+        let hasOrders = false
+        if (orderList.length > 0) {
+            hasOrders = true
+        }
+
+        return res.render("ready_for_delivery", {
+            layout: "layout.hbs",
+            orderList: orderList,
+            hasOrders: hasOrders,
+        })
+    } catch (err) {
+        console.log(err);
+        return res.redirect('/error')
+    }
 })
 
 app.get("/in_transit", async (req, res) => {
-    const orderList = await findOrderList("IN TRANSIT");
-    return res.render("in_transit", {
-        layout: "layout.hbs",
-        orderList: orderList,
-    })
+    try {
+        const orderList = await findOrderList("IN TRANSIT");
+
+        let hasOrders = false
+        if (orderList.length > 0) {
+            hasOrders = true
+        }
+
+        return res.render("in_transit", {
+            layout: "layout.hbs",
+            orderList: orderList,
+            hasOrders: hasOrders,
+        })
+    } catch (err) {
+        console.log(err);
+        return res.redirect('/error')
+    }
 })
 
 app.get("/delivered", async (req, res) => {
-    const orderList = await findOrderList("DELIVERED");
-    return res.render("delivered", {
-        layout: "layout.hbs",
-        orderList: orderList,
-    })
+    try {
+        const orderList = await findOrderList("DELIVERED");
+
+        let hasOrders = false
+        if (orderList.length > 0) {
+            hasOrders = true
+        }
+
+        return res.render("delivered", {
+            layout: "layout.hbs",
+            orderList: orderList,
+            hasOrders: hasOrders,
+        })
+    } catch (err) {
+        console.log(err);
+        return res.redirect('/error')
+    }
 })
 
 app.post("/update_status/:orderId", async (req, res) => {
@@ -164,7 +226,7 @@ app.post("/update_status/:orderId", async (req, res) => {
         } else if (newStatus === "READY FOR DELIVERY") {
             return res.redirect("/ready_for_delivery");
         }
-        
+
     } catch (err) {
         return res.status(500).send(`Server error.`)
     }

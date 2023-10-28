@@ -1,26 +1,43 @@
 <main>
     <h2>Incoming Orders</h2>
-    {{#each orderList}}
-    <form action="/update_status/{{this._id}}" class="update-status-form" method="post">
-        <label for="customer-info">Customer Info:</label>
-        <ul name="customer-info">
-            <li>Name: {{this.customerName}}</li>
-            <li>Address: {{this.deliveryAddress}}</li>
-            <li>Phone Number: {{this.phoneNumber}}</li>
-        </ul>
+    {{#if hasOrders}}
+        {{#each orderList}}
+            <form
+                action="/update_status/{{this._id}}"
+                class="update-status-form"
+                method="post"
+            >
+                <label for="customer-info">Customer Info:</label>
+                <ul name="customer-info">
+                    <li>Name: {{this.customerName}}</li>
+                    <li>Address: {{this.deliveryAddress}}</li>
+                    <li>Phone Number: {{this.phoneNumber}}</li>
+                </ul>
 
-        <label name="order-items">Order Items:</label>
-        <ul name="order-items">
-            {{#each this.itemsOrdered}}
-            <li>{{this.name}}</li>
-            {{/each}}
-        </ul>
-        <input type="hidden" name="newStatus" value="RECEIVED" />
-        <div class="order-date-and-btn">
-            <p class="order-date">Order placed at: {{this.createdAt}}</p>
-            <button class="btn-change-status" type="submit">Receive</button>
+                <label name="order-items">Order Items:</label>
+                <ul name="order-items">
+                    {{#each this.itemsOrdered}}
+                        <li>{{this.name}}</li>
+                    {{/each}}
+                </ul>
+                <input type="hidden" name="newStatus" value="RECEIVED" />
+                <div class="order-date-and-btn">
+                    <p class="order-date">Order placed at:
+                        {{this.createdAt}}</p>
+                    <button
+                        class="btn-change-status"
+                        type="submit"
+                    >Receive</button>
+                </div>
+
+            </form>
+        {{/each}}
+    {{else}}
+        <div class="div-center">
+            <h1>No incoming orders yet.</h1>
+            <p>
+                Please come back later.
+            </p>
         </div>
-        
-    </form>
-    {{/each}}
+    {{/if}}
 </main>

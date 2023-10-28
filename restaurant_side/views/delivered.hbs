@@ -1,24 +1,45 @@
 <main>
-    {{#each orderList}}
-    <form action="/update_status/{{this._id}}" class="update-status-form" method="post">
-        <label for="customer-info">Customer Info:</label>
-        <ul name="customer-info">
-            <li>Name: {{this.customerName}}</li>
-            <li>Address: {{this.deliveryAddress}}</li>
-            <li>Phone Number: {{this.phoneNumber}}</li>
-        </ul>
+    <h2>Delivered</h2>
+    {{#if hasOrders}}
+        {{#each orderList}}
+            <form
+                action="/update_status/{{this._id}}"
+                class="update-status-form"
+                method="post"
+            >
+                <label for="customer-info">Customer Info:</label>
+                <ul name="customer-info">
+                    <li>Name: {{this.customerName}}</li>
+                    <li>Address: {{this.deliveryAddress}}</li>
+                    <li>Phone Number: {{this.phoneNumber}}</li>
+                </ul>
 
-        <label name="order-items">Order Items:</label>
-        <ul name="order-items">
-            {{#each this.itemsOrdered}}
-            <li>{{this.name}}</li>
-            {{/each}}
-        </ul>
-        <div class="order-date-and-btn">
-                <p class="order-date">Order delivered at: {{this.updatedAt}}</p>
-                <a href="{{this.proofOfDelivery}}">See the proof of delivery</a>
+                <label name="order-items">Order Items:</label>
+                <ul name="order-items">
+                    {{#each this.itemsOrdered}}
+                        <li>{{this.name}}</li>
+                    {{/each}}
+                </ul>
+
+                <label name="order-items">Driver Info:</label>
+                <ul name="order-items">
+                    <li>Driver Name: {{this.driver.fullName}}</li>
+                    <li>Vehicle Model: {{this.driver.vehicleModel}}</li>
+                    <li>Vehicle Color: {{this.driver.vehicleColor}}</li>
+                    <li>License Plate: {{this.driver.licensePlate}}</li>
+                </ul>
+
+                <div class="order-date-and-btn">
+                    <p class="order-date">Order delivered at:
+                        {{this.updatedAt}}</p>
+                    <a href="{{this.proofOfDelivery}}">See the proof of delivery</a>
+                </div>
+
+            </form>
+        {{/each}}
+    {{else}}
+        <div class="div-center">
+            <h1>No orders delivered yet.</h1>
         </div>
-        
-    </form>
-    {{/each}}
+    {{/if}}
 </main>

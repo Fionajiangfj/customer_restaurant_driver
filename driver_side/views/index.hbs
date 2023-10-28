@@ -5,7 +5,7 @@
         <h2>In Transit</h2>
     {{/if}}
 
-    {{#if hasInTransitOrders}}
+    {{#if hasOrders}}
         {{#each inTransitList}}
             <form
                 action="/upload_proof/{{this._id}}"
@@ -32,19 +32,28 @@
                     {{!-- <p class="order-date">Order placed at: {{this.createdAt}}</p> --}}
                     <div>
                         <label for="proof-file-{{this.id}}">Proof of delivery:</label>
-                        <input name="photo" id="proof-file-{{this.id}}" type="file" />
+                        <input
+                            name="photo"
+                            id="proof-file-{{this.id}}"
+                            type="file"
+                        />
                     </div>
-                    <button class="btn-change-status" type="submit">Deliver</button>
+                    <button
+                        class="btn-change-status"
+                        type="submit"
+                    >Deliver</button>
                 </div>
 
             </form>
         {{/each}}
     {{else}}
-        <h2>You don't have any order In Transit.</h2> 
-        <h2>
-            Go to 
+        <div class="div-center">
+            <h1>You don't have any orders In Transit.</h1>
+            <p>
+                Go to
                 <a href="/open_for_delivery">Open for Delivery</a>
-            to pick up some orders.
-        </h2>
+                to pick up some orders.
+            </p>
+        </div>
     {{/if}}
 </main>

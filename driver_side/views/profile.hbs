@@ -1,23 +1,18 @@
 <main>
-    <h2>Profile</h2>
-    <div>
-        <label for="">Username: </label>
-        <input type="text" value="{{driver.username}}" />
-    </div>
-    <div>
-        <label for="">Full Name:</label>
-        <input type="text" value="{{driver.fullName}}" />
-    </div>
-    <div>
-        <label for="">Vehicle Model</label>
-        <input type="text" value="{{driver.vehicleModel}}" />
-    </div>
-    <div>
-        <label for="">Vehicle Color</label>
-        <input type="text" value="{{driver.vehicleColor}}" />
-    </div>
-    <div>
-        <label for="">License Plate:</label>
-        <input type="text" value="{{driver.licensePlate}}" />
+    <h2>My Profile</h2>
+    <div class="update-status-form">
+        <label for="customer-info">Personal Info:</label>
+        <ul name="customer-info">
+            <li>Username: {{driver.username}}</li>
+            <li>Full Name: {{driver.fullName}}</li>
+        </ul>
+
+        <label for="customer-info">Vehicle Info:</label>
+        <ul name="customer-info">
+            <li>Vehicle Model: {{driver.vehicleModel}}</li>
+            <li>Vehicle Color: {{driver.vehicleColor}}</li>
+            <li>License Plate: {{driver.licensePlate}}</li>
+        </ul>
+        <p class="order-date">Account created at: {{driver.createdAt}}</p>
     </div>
 </main>

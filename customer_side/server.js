@@ -139,16 +139,24 @@ app.post("/place_order", async (req, res) => {
     } else {
         // if valid
         let orderList = [];
-        for (itemID of orderItemsIDs ) {
-            try {
-                // get item object
-                const item = await Menu.findOne({ _id: itemID }).lean()
-                orderList.push(item)
-            } catch(err) {
-                return res.redirect('/error')
+        // if ordered mutiple items
+        if (Array.isArray(orderItemsIDs)) {
+            for (itemID of orderItemsIDs ) {
+                try {
+                    // get item object
+                    const item = await Menu.findOne({ _id: itemID }).lean()
+                    orderList.push(item)
+                } catch(err) {
+                    return res.redirect('/error')
+                }
             }
-        }
+        } else {
 
+            // if ordered one item
+            const item = await Menu.findOne({ _id: orderItemsIDs }).lean()
+            orderList.push(item)
+        }
+        
         const orderToInsert = new Order({
             customerName: username,
             deliveryAddress: address,
@@ -156,6 +164,7 @@ app.post("/place_order", async (req, res) => {
             itemsOrdered: orderList,
             status: "PLACED",
         });
+
 
         try {
             await orderToInsert.save();
