@@ -5,37 +5,46 @@
         <h2>In Transit</h2>
     {{/if}}
 
-    {{#each inTransitList}}
-        <form
-            action="/upload_proof/{{this._id}}"
-            class="update-status-form"
-            method="post"
-            enctype="multipart/form-data"
-        >
+    {{#if hasInTransitOrders}}
+        {{#each inTransitList}}
+            <form
+                action="/upload_proof/{{this._id}}"
+                class="update-status-form"
+                method="post"
+                enctype="multipart/form-data"
+            >
 
-            <label for="customer-info">Customer Info:</label>
-            <ul name="customer-info">
-                <li>Name: {{this.customerName}}</li>
-                <li>Address: {{this.deliveryAddress}}</li>
-                <li>Phone Number: {{this.phoneNumber}}</li>
-            </ul>
+                <label for="customer-info">Customer Info:</label>
+                <ul name="customer-info">
+                    <li>Name: {{this.customerName}}</li>
+                    <li>Address: {{this.deliveryAddress}}</li>
+                    <li>Phone Number: {{this.phoneNumber}}</li>
+                </ul>
 
-            <label name="order-items">Order Items:</label>
-            <ul name="order-items">
-                {{#each this.itemsOrdered}}
-                    <li>{{this.name}}</li>
-                {{/each}}
-            </ul>
-            <input type="hidden" name="newStatus" value="DELIVERED" />
-            <div class="order-date-and-btn">
-                {{!-- <p class="order-date">Order placed at: {{this.createdAt}}</p> --}}
-                <div>
-                    <label for="proof-file-{{this.id}}">Proof of delivery:</label>
-                    <input name="photo" id="proof-file-{{this.id}}" type="file" />
+                <label name="order-items">Order Items:</label>
+                <ul name="order-items">
+                    {{#each this.itemsOrdered}}
+                        <li>{{this.name}}</li>
+                    {{/each}}
+                </ul>
+                <input type="hidden" name="newStatus" value="DELIVERED" />
+                <div class="order-date-and-btn">
+                    {{!-- <p class="order-date">Order placed at: {{this.createdAt}}</p> --}}
+                    <div>
+                        <label for="proof-file-{{this.id}}">Proof of delivery:</label>
+                        <input name="photo" id="proof-file-{{this.id}}" type="file" />
+                    </div>
+                    <button class="btn-change-status" type="submit">Deliver</button>
                 </div>
-                <button class="btn-change-status" type="submit">Deliver</button>
-            </div>
 
-        </form>
-    {{/each}}
+            </form>
+        {{/each}}
+    {{else}}
+        <h2>You don't have any order In Transit.</h2> 
+        <h2>
+            Go to 
+                <a href="/open_for_delivery">Open for Delivery</a>
+            to pick up some orders.
+        </h2>
+    {{/if}}
 </main>

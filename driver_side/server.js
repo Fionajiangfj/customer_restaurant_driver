@@ -141,10 +141,18 @@ const ensureLogin = (req, res, next) => {
 app.get("/", ensureLogin, async (req, res) => {
     const msg = req.flash("info")
     try {
-        const inTransitList = await Order.find({status: "IN TRANSIT"}).lean()
+        const driver = await Driver.findOne(req.session.user)
+        const inTransitList = await Order.find({driver: driver, status: "IN TRANSIT"}).lean()
+        
+        let hasInTransitOrders = false
+        if (inTransitList.length > 0) {
+            hasInTransitOrders = true
+        }
+
         return res.render("index", {
             layout: "layout.hbs",
             inTransitList: inTransitList,
+            hasInTransitOrders: hasInTransitOrders,
             msg: msg
         });
     }catch(err){
@@ -166,6 +174,33 @@ app.get("/open_for_delivery", ensureLogin, async (req, res) => {
         return res.redirect('/')
     }
 });
+
+app.get("/history", ensureLogin, async(req, res) => {
+    try {
+        const driver = await Driver.findOne(req.session.user)
+        const deliveredList = await Order.find({driver: driver, status: "DELIVERED"}).lean()
+        return res.render("history", {
+            layout: "layout.hbs",
+            deliveredList: deliveredList
+        });
+    }catch(err){
+        req.flash("info", "There seems to be something wrong, please try again later.")
+        return res.redirect('/')
+    }
+})
+
+app.get("/profile", async (req, res) => {
+    try {
+        const driverObjectFromDB = await Driver.findOne(req.session.user).lean()
+        return res.render("profile", {
+            layout: "layout.hbs",
+            driver: driverObjectFromDB,
+        })
+    } catch(err){
+        req.flash("info", "There seems to be something wrong, please try again later.")
+        return res.redirect('/')
+    }
+})
 
 app.post("/upload_proof/:id", ensureLogin, upload.single("photo"), async (req, res) => {
     try {
@@ -192,25 +227,16 @@ app.post("/upload_proof/:id", ensureLogin, upload.single("photo"), async (req, r
     }
 })
 
-app.get("/history", ensureLogin, async(req, res) => {
-    try {
-        const deliveredList = await Order.find({status: "DELIVERED"}).lean()
-        return res.render("history", {
-            layout: "layout.hbs",
-            deliveredList: deliveredList
-        });
-    }catch(err){
-        req.flash("info", "There seems to be something wrong, please try again later.")
-        return res.redirect('/')
-    }
-})
 
 app.post("/update_status/:id", ensureLogin, async(req, res) => {
     const orderID = req.params.id
+    const driverUsername = req.session.user.username
     const newStatus = req.body.newStatus
 
     try {
+        const dirverObject = await Driver.findOne({username: driverUsername}).lean()
         const order = await Order.findById(orderID)
+        order.driver = dirverObject
         order.status = newStatus
         order.save()
 
@@ -247,11 +273,7 @@ app.post("/login", async (req, res) => {
         }).lean();
 
         if (userFromDB) {
-            req.session.user = {
-                username: username,
-                password: password,
-                isLoggedIn: true,
-            };
+            req.session.user = userFromDB;
             return res.redirect("/");
         } else {
             req.flash("info", "Can not find the user, please try again.");
@@ -317,11 +339,7 @@ app.post("/register", async (req, res) => {
         return res.redirect('/')
     }
 
-    req.session.user = {
-        username: username,
-        password: password,
-        isLoggedIn: true,
-    };
+    req.session.user = driverToInsert;
 
     return res.redirect("/");
 });
